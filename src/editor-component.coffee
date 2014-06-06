@@ -71,7 +71,7 @@ EditorComponent = React.createClass
 
     div className: className, style: {fontSize, lineHeight, fontFamily}, tabIndex: -1,
       GutterComponent {
-        ref: 'gutter', editor, renderedRowRange, maxLineNumberDigits, scrollTop,
+        ref: 'gutter', onClick: @onClickGutter, editor, renderedRowRange, maxLineNumberDigits, scrollTop,
         scrollHeight, lineHeightInPixels, @pendingChanges, mouseWheelScreenRow,
         decorations
       }
@@ -480,6 +480,19 @@ EditorComponent = React.createClass
     @selectToMousePositionUntilMouseUp(event)
     event.preventDefault()
     event.stopPropagation()
+
+  onClickGutter: (event) ->
+    console.log 'gutter click', event
+    {editor} = @props
+    {target} = event
+    lineNumber = target.parentNode
+
+    if target.classList.contains('icon-right') and lineNumber.classList.contains('foldable')
+      bufferRow = parseInt(lineNumber.getAttribute('data-buffer-row'))
+      if lineNumber.classList.contains('folded')
+        editor.unfoldBufferRow(bufferRow)
+      else
+        editor.foldBufferRow(bufferRow)
 
   onStylesheetsChanged: (stylesheet) ->
     @refreshScrollbars() if @containsScrollbarSelector(stylesheet)
