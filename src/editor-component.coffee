@@ -482,7 +482,6 @@ EditorComponent = React.createClass
     event.stopPropagation()
 
   onClickGutter: (event) ->
-    console.log 'gutter click', event
     {editor} = @props
     {target} = event
     lineNumber = target.parentNode
