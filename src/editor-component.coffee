@@ -540,6 +540,7 @@ EditorComponent = React.createClass
     @cursorsMoved = true
 
   onDecorationChanged: ->
+    return if @decorationChangedImmediate?
     @decorationChangedImmediate = setImmediate =>
       @requestUpdate()
       @decorationChangedImmediate = null
